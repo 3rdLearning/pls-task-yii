@@ -82,7 +82,32 @@ class SiteController extends Controller {
 				$this->redirect(Yii::app()->user->returnUrl);
 			}
 		}
-		$this->render('login', ['model' => $model]);
+
+        $orderedRss = [];
+        $rss = Feed::loadRss('https://supereval.com/blog/category/supereval-updates/feed')->toArray();
+        foreach ($rss['item'] as $item) {
+            $orderedRss[$item['timestamp']] = [
+                'title' => $item['title'],
+                'description' => $item['description'],
+                'link' => $item['link'],
+            ];
+        }
+        krsort($orderedRss);
+        $latestRssSuperval = array_shift($orderedRss);
+
+        $orderedRss = [];
+        $rss = Feed::loadRss('https://supereval.com/blog/feed')->toArray();
+        foreach ($rss['item'] as $item) {
+            $orderedRss[$item['timestamp']] = [
+                'title' => $item['title'],
+                'description' => $item['description'],
+                'link' => $item['link'],
+            ];
+        }
+        krsort($orderedRss);
+        $latestRssBlog = array_shift($orderedRss);
+
+		$this->render('login', ['model' => $model, 'rssSuperval' => $latestRssSuperval, 'rssBlog' => $latestRssBlog]);
 	}
 
 	/**
