@@ -421,7 +421,7 @@ gradle-app.setting
 ##### Env
 .env*
 
-# Ignore vendors and IDE files
+# Ignore vendor and IDE files
 /apps/pls/.idea
 /apps/pls/vendor/
 /apps/pls/www/assets/
