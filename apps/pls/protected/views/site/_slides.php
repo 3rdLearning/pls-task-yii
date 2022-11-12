@@ -27,7 +27,7 @@
 			<div class="overlay"></div>
 			<div class="content">
 				<i class="fal fa-comment-alt-edit"></i>
-				<h3><?= $rssSuperEval['title'] ?>:</h3>
+				<h3><?= $rssSuperEval['title'] ?></h3>
 				<div class="row is-flex">
 					<div class="col-md-12 bubble">
 						<?= substr($rssSuperEval['description'], 0, 120) ?>...
@@ -42,14 +42,13 @@
 			<div class="overlay"></div>
 			<div class="content">
 				<i class="fal fa-comment-alt-lines"></i>
-				<h3>Six Benefits of Having an Open Communication System with Teachers and School Staff</h3>
+				<h3><?= $rssBlog['title'] ?></h3>
 				<div class="row">
 					<div class="col-md-12 bubble">
-						This communication system has a number of perks. Here are six ways your school district may be
-						able to benefit from it.
+                        <?= substr($rssBlog['description'], 0, 120) ?>...
 					</div>
 				</div>
-				<a href="https://supereval.com/blog/open-communication-system" target="_blank" class="btn btn-primary">Read
+				<a href="<?= $rssBlog['link'] ?>" target="_blank" class="btn btn-primary">Read
 					Our Blog</a>
 			</div>
 		</div>
