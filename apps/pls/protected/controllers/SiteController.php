@@ -93,7 +93,7 @@ class SiteController extends Controller {
             ];
         }
         krsort($orderedRss);
-        $latestRssSuperval = array_shift($orderedRss);
+        $latestRssSuperEval = array_shift($orderedRss);
 
         $orderedRss = [];
         $rss = Feed::loadRss('https://supereval.com/blog/feed')->toArray();
@@ -107,7 +107,7 @@ class SiteController extends Controller {
         krsort($orderedRss);
         $latestRssBlog = array_shift($orderedRss);
 
-		$this->render('login', ['model' => $model, 'rssSuperval' => $latestRssSuperval, 'rssBlog' => $latestRssBlog]);
+		$this->render('login', ['model' => $model, 'rssSuperEval' => $latestRssSuperEval, 'rssBlog' => $latestRssBlog]);
 	}
 
 	/**
