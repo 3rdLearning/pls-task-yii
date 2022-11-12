@@ -83,29 +83,11 @@ class SiteController extends Controller {
 			}
 		}
 
-        $orderedRss = [];
-        $rss = Feed::loadRss('https://supereval.com/blog/category/supereval-updates/feed')->toArray();
-        foreach ($rss['item'] as $item) {
-            $orderedRss[$item['timestamp']] = [
-                'title' => $item['title'],
-                'description' => $item['description'],
-                'link' => $item['link'],
-            ];
-        }
-        krsort($orderedRss);
-        $latestRssSuperEval = array_shift($orderedRss);
+        $rss = Feed::loadRss('https://supereval.com/blog/category/supereval-updates/feed');
+        $latestRssSuperEval = $this->getRssFeedData($rss);
 
-        $orderedRss = [];
-        $rss = Feed::loadRss('https://supereval.com/blog/feed')->toArray();
-        foreach ($rss['item'] as $item) {
-            $orderedRss[$item['timestamp']] = [
-                'title' => $item['title'],
-                'description' => $item['description'],
-                'link' => $item['link'],
-            ];
-        }
-        krsort($orderedRss);
-        $latestRssBlog = array_shift($orderedRss);
+        $rss = Feed::loadRss('https://supereval.com/blog/feed');
+        $latestRssBlog = $this->getRssFeedData($rss);
 
 		$this->render('login', ['model' => $model, 'rssSuperEval' => $latestRssSuperEval, 'rssBlog' => $latestRssBlog]);
 	}
@@ -135,4 +117,29 @@ class SiteController extends Controller {
 			}
 		}
 	}
+
+    /**
+     * Get the latest RSS Feed data
+     * Note: the feed is sorted by default in a descendant order
+     *
+     * @param $rss
+     * @return array
+     */
+    private function getRssFeedData($rss) {
+        $orderedRss = [];
+        $feedCount = 1;
+        foreach ($rss->item as $item) {
+            if ($feedCount > 1) {
+                return $orderedRss;
+            }
+            $orderedRss = [
+                'title' => $item->title,
+                'description' => $item->description,
+                'link' => $item->link,
+            ];
+            $feedCount++;
+        }
+
+        return $orderedRss;
+    }
 }
