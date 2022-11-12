@@ -107,16 +107,26 @@ class HelpController extends Controller {
 		Feed::$cacheDir = Yii::app()->params['latestUpdatesFeedCacheDir'];
 		Feed::$cacheExpire = Yii::app()->params['latestUpdatesFeedCacheExp'];
 		$feed = Feed::loadRss(Yii::app()->params['latestUpdatesFeedUrl']);
-		$items = [];
+
+        $feedCount = 0;
+        $rssData = [];
 		if (!empty($feed)) {
 			foreach ($feed->item as $item) {
+                $aux = new stdClass();
+                if ($feedCount >= 5) {
+                    continue;
+                }
 				$more = ' <a href="' . $item->link . '" target="_blank">Read more</a>';
-				$item->description = trim(str_replace(' [&#8230;]', '...' . $more, $item->description));
-				$item->description = preg_replace('/The post.*appeared first on .*\./', '', $item->description);
+                $aux->description = trim(str_replace(' [&#8230;]', '...' . $more, $item->description));
+                $aux->description = preg_replace('/The post.*appeared first on .*\./', '', $aux->description);
+                $aux->link = $item->link;
+                $aux->title = $item->title;
+
+                $rssData[] = $aux;
+                $feedCount++;
 			}
-			$items = $feed->item;
 		}
-		$this->render('updates', ['updates' => $items]);
+		$this->render('updates', ['updates' => $rssData]);
 	}
 
 }
